@@ -32,7 +32,7 @@ public:
         InitWindow(screenWidth, screenHeight, "gibbon bullet debug drawer");
 
         mCamera = {
-            .position = {0.f, 18.f, 10.f},
+            .position = {-4.f, 18.f, 10.f},
             .target = {0.0f, 0.0f, 0.0f},
             .up = {0.0f, 1.0f, 0.0f},
             .fovy = 45.0f,
@@ -50,6 +50,16 @@ public:
     void BeginDebug() {
         BeginDrawing();
         ClearBackground(SKYBLUE);
+
+        if (IsKeyDown(KEY_RIGHT))
+            mCamera.position.x += 0.2f;
+        else if (IsKeyDown(KEY_LEFT))
+            mCamera.position.x -= 0.2f;
+        else if (IsKeyDown(KEY_DOWN))
+            mCamera.position.y -= 0.2f;
+        else if (IsKeyDown(KEY_UP))
+            mCamera.position.y += 0.2f;
+
         BeginMode3D(mCamera);
     }
 
