@@ -72,10 +72,10 @@ public:
         DrawLine3D(ToVector3(from), ToVector3(to), ToColor(color));
     }
 
-    void drawSphere(btScalar radius, const btTransform& transform, const btVector3& color) override {
-        spdlog::info("drawSphere()");
-        DrawSphere(ToVector3(transform.getOrigin()), radius, ToColor(color));
-    }
+    // void drawSphere(btScalar radius, const btTransform& transform, const btVector3& color) override {
+    //     spdlog::info("drawSphere()");
+    //     DrawSphere(ToVector3(transform.getOrigin()), radius, ToColor(color));
+    // }
 
     void drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar /*alpha*/) override {
         DrawTriangle3D(ToVector3(v0), ToVector3(v1), ToVector3(v2), ToColor(color));

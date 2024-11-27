@@ -1,3 +1,4 @@
+#include <atomic>
 #include <chrono>
 #include <cmath>
 #include <functional>
@@ -48,38 +49,7 @@ btQuaternion RandomQuat() {
     return btQuaternion(dis(gen), dis(gen), dis(gen), dis(gen));
 }
 
-struct CylinderContext {
-    btCylinderShape* mCylinderShape = nullptr;
-    btRigidBody* mCylinderBody = nullptr;
-
-    virtual ~CylinderContext() {
-        if (mCylinderShape) {
-            delete mCylinderShape;
-            mCylinderShape = nullptr;
-        }
-        if (mCylinderBody) {
-            delete mCylinderBody;
-            mCylinderBody = nullptr;
-        }
-    }
-};
-
-struct BallContext {
-    btSphereShape* mBallShape = nullptr;
-    btRigidBody* mBallBody = nullptr;
-
-    virtual ~BallContext() {
-        if (mBallShape) {
-            delete mBallShape;
-            mBallShape = nullptr;
-        }
-        if (mBallBody) {
-            delete mBallBody;
-            mBallBody = nullptr;
-        }
-    }
-};
-
+static std::atomic<int> sCount = 0;
 struct ObjectContext {
     btCollisionShape* mShape;
     btRigidBody* mBody;
@@ -89,21 +59,23 @@ struct ObjectContext {
         : mShape(nullptr),
           mBody(nullptr),
           mMotionState(nullptr) {
+        spdlog::info("ObjectContext construct {}", ++sCount);
     }
 
     ~ObjectContext() {
-        if (mShape) {
-            delete mShape;
-            mShape = nullptr;
+        if (mMotionState) {
+            delete mMotionState;
+            mMotionState = nullptr;
         }
         if (mBody) {
             delete mBody;
             mBody = nullptr;
         }
-        if (mMotionState) {
-            delete mMotionState;
-            mMotionState = nullptr;
+        if (mShape) {
+            delete mShape;
+            mShape = nullptr;
         }
+        spdlog::info("ObjectContext destruct {}", --sCount);
     }
 };
 
@@ -269,8 +241,8 @@ int main() {
     debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
     context.mPhysicsWorld->setDebugDrawer(&debugDrawer);
 
-    ::gibbon::SkillCooldown ballNPC(5300);
-    ::gibbon::SkillCooldown cylinderNPC(6700);
+    ::gibbon::SkillCooldown ballNPC(700);
+    ::gibbon::SkillCooldown cylinderNPC(1100);
 
     auto frameTP = std::chrono::system_clock::now();
     while (!debugDrawer.IsWindowClose()) {

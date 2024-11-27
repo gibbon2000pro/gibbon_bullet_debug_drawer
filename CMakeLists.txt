@@ -61,6 +61,6 @@ target_link_libraries(one_ball_game_bt_world PUBLIC
     spdlog::spdlog
     ${BULLET_LIBRARIES}
 )
-target_link_options(one_ball_game_bt_world
-    BEFORE PUBLIC -fsanitize=undefined PUBLIC -fsanitize=address
-)
+# target_link_options(one_ball_game_bt_world
+#     BEFORE PUBLIC -fsanitize=undefined PUBLIC -fsanitize=address
+# )
