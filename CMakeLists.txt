@@ -51,3 +51,16 @@ target_link_libraries(test_compound PUBLIC
 target_link_options(test_compound
     BEFORE PUBLIC -fsanitize=undefined PUBLIC -fsanitize=address
 )
+
+
+add_executable(one_ball_game_bt_world
+    one_ball_game_bt_world.cpp
+)
+target_link_libraries(one_ball_game_bt_world PUBLIC
+    libraylib.a
+    spdlog::spdlog
+    ${BULLET_LIBRARIES}
+)
+target_link_options(one_ball_game_bt_world
+    BEFORE PUBLIC -fsanitize=undefined PUBLIC -fsanitize=address
+)

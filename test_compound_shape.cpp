@@ -132,12 +132,12 @@ int main() {
     physicsWorld->addRigidBody(ball->mBody);
 
     // debug drawer
-    auto debugDrawer = std::make_shared<::gibbon::BulletDebugDrawer>();
-    debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
-    physicsWorld->setDebugDrawer(debugDrawer.get());
+    ::gibbon::BulletDebugDrawer debugDrawer;
+    debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+    physicsWorld->setDebugDrawer(&debugDrawer);
 
     auto lastTime = std::chrono::system_clock::now();
-    while (!debugDrawer->IsWindowClose()) {
+    while (!debugDrawer.IsWindowClose()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
         auto now = std::chrono::system_clock::now();
@@ -149,9 +149,9 @@ int main() {
 
         physicsWorld->stepSimulation(delta);
 
-        debugDrawer->BeginDebug();
+        debugDrawer.BeginDebug();
         physicsWorld->debugDrawWorld();
-        debugDrawer->EndDebug();
+        debugDrawer.EndDebug();
     }
 
     return 0;
